@@ -2,7 +2,7 @@ name: Fetch RSS Feed
 
 on:
   schedule:
-    - cron: '0 */2 * * *'  # Run every 2 hours
+    - cron: '0 0 * * 0'  # Run every Sunday at midnight UTC
   workflow_dispatch:
 
 jobs:
@@ -131,7 +131,6 @@ jobs:
               git config --local user.name "github-actions[bot]"
               git add posts/rss_feed.xml
               git commit -m "Update RSS feed [skip ci]"
-              git push
             else
               echo "No changes to RSS feed"
             fi
