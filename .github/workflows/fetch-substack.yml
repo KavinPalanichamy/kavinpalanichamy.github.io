@@ -11,7 +11,17 @@ jobs:
     
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3      # Updated to v3
+        uses: actions/checkout@v3
+        
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+          
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install feedparser requests beautifulsoup4
         
       - name: Create posts directory
         run: mkdir -p posts
@@ -19,28 +29,80 @@ jobs:
       - name: Fetch RSS Feed
         id: fetch_rss
         run: |
-          # Substack RSS feed URL format correction
-          RSS_URL="https://kavinpalanichamy.substack.com/feed"  # Added /feed
-          curl -L -s "$RSS_URL" -o posts/rss_feed.xml
+          cat > fetch_feed.py << 'EOF'
+          import feedparser
+          import requests
+          import time
+          from bs4 import BeautifulSoup
           
-          # Check if feed was fetched successfully
-          if [ ! -s posts/rss_feed.xml ]; then
-            echo "Error: RSS feed is empty or failed to fetch"
-            exit 1
-          fi
+          def get_substack_feed(url):
+              # Add /feed if not present
+              if not url.endswith('/feed'):
+                  url = url.rstrip('/') + '/feed'
+              
+              # Set up headers to look more like a browser
+              headers = {
+                  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+                  'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                  'Accept-Language': 'en-US,en;q=0.5',
+                  'Accept-Encoding': 'gzip, deflate, br',
+                  'Connection': 'keep-alive',
+                  'Upgrade-Insecure-Requests': '1'
+              }
+              
+              # Try to fetch the feed with retries
+              max_retries = 3
+              for attempt in range(max_retries):
+                  try:
+                      response = requests.get(url, headers=headers, timeout=30)
+                      response.raise_for_status()
+                      
+                      # Parse the feed
+                      feed = feedparser.parse(response.content)
+                      
+                      # Check if we got a valid feed
+                      if feed.entries:
+                          return response.content
+                          
+                      # If no entries, might be getting blocked
+                      time.sleep(5)  # Wait before retry
+                          
+                  except Exception as e:
+                      print(f"Attempt {attempt + 1} failed: {str(e)}")
+                      if attempt < max_retries - 1:
+                          time.sleep(10)  # Wait longer between retries
+                          
+              return None
           
-          echo "RSS feed fetched successfully"
+          # Main execution
+          url = "https://kavinpalanichamy.substack.com"
+          content = get_substack_feed(url)
+          
+          if content:
+              with open('posts/rss_feed.xml', 'wb') as f:
+                  f.write(content)
+              print("Successfully fetched and saved RSS feed")
+              exit(0)
+          else:
+              print("Failed to fetch RSS feed after all retries")
+              exit(1)
+          EOF
+          
+          python fetch_feed.py
         
       - name: Commit and push changes
         run: |
-          # Only commit if there are changes
-          if git diff --quiet posts/rss_feed.xml; then
-            echo "No changes to RSS feed"
-            exit 0
+          if [ -f posts/rss_feed.xml ] && [ -s posts/rss_feed.xml ]; then
+            if ! git diff --quiet posts/rss_feed.xml; then
+              git config --local user.email "github-actions[bot]@users.noreply.github.com"
+              git config --local user.name "github-actions[bot]"
+              git add posts/rss_feed.xml
+              git commit -m "Update RSS feed [skip ci]"
+              git push
+            else
+              echo "No changes to RSS feed"
+            fi
+          else
+            echo "RSS feed file is missing or empty"
+            exit 1
           fi
-          
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git add posts/rss_feed.xml
-          git commit -m "Update RSS feed [skip ci]"
-          git push
