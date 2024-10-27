@@ -25,8 +25,8 @@ jobs:
 
       - name: Generate Markdown files
         id: generate_md
-        run: python scripts/generate_md.py
-
+        run: python .github\scripts\generate_md.py
+        
       - name: Commit new Markdown files
         run: |
           git config --local user.email "action@github.com"
