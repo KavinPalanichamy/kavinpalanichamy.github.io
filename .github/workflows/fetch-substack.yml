@@ -1,53 +1,31 @@
-name: Fetch Substack Posts
+name: Fetch RSS Feed
 
 on:
-  workflow_dispatch:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '0 * * * *'  # This schedule runs every hour. Adjust as needed.
+  workflow_dispatch:  # Allows you to manually trigger the workflow.
 
 jobs:
-  fetch-posts:
+  fetch_rss:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      - name: Verify Feed URL
+      - name: Fetch RSS Feed
+        id: fetch_rss
         run: |
-          FEED_URL="https://kavinpalanichamy.substack.com/feed"
-          echo "Checking feed URL: $FEED_URL"
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36" "$FEED_URL")
-          echo "Feed URL status code: $STATUS"
-          if [ "$STATUS" != "200" ]; then
-            echo "Error: Feed URL returned status $STATUS"
-            curl -v -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36" "$FEED_URL"
-            exit 1
-          fi
+          RSS_URL="https://kavinpalanichamy.substack.com"  # Replace with your RSS feed URL.
+          curl -s "$RSS_URL" -o rss_feed.xml
+          echo "RSS feed fetched successfully."
 
-      - name: Install Dependencies
-        run: npm install rss-parser
-
-      - name: Create Posts Directory
-        run: mkdir -p posts
-
-      - name: Fetch Substack RSS
+      - name: Save RSS Feed to file
         run: |
-          echo "Node.js version: $(node --version)"
-          echo "NPM version: $(npm --version)"
-          node .github/scripts/fetch-posts.js
-        env:
-          NODE_OPTIONS: --no-warnings
-          DEBUG: "rss-parser:*"
-
-      - name: Commit New Posts
-        if: success()
-        run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git add posts/
-          git diff --staged --quiet || (git commit -m "Add new Substack posts" && git push)
+          echo "Saving RSS feed to repository..."
+          mv rss_feed.xml ./rss_feed.xml
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add ./rss_feed.xml
+          git commit -m "Update RSS feed"
+          git push
