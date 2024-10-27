@@ -2,8 +2,8 @@ name: Fetch RSS Feed
 
 on:
   schedule:
-    - cron: '0 * * * *'  # Runs every hour
-  workflow_dispatch:      # Manual trigger option
+    - cron: '0 */2 * * *'  # Run every 2 hours instead of every hour
+  workflow_dispatch:
 
 jobs:
   fetch_rss:
@@ -18,10 +18,12 @@ jobs:
         with:
           python-version: '3.x'
           
-      - name: Install dependencies
+      - name: Install Chrome and dependencies
         run: |
+          sudo apt-get update
+          sudo apt-get install -y chromium-browser chromium-chromedriver
           python -m pip install --upgrade pip
-          pip install feedparser requests beautifulsoup4
+          pip install selenium requests feedparser webdriver_manager
         
       - name: Create posts directory
         run: mkdir -p posts
@@ -30,67 +32,66 @@ jobs:
         id: fetch_rss
         run: |
           cat > fetch_feed.py << 'EOF'
-          import feedparser
-          import requests
+          from selenium import webdriver
+          from selenium.webdriver.chrome.options import Options
+          from selenium.webdriver.chrome.service import Service
+          from selenium.webdriver.common.by import By
+          from selenium.webdriver.support.ui import WebDriverWait
+          from selenium.webdriver.support import expected_conditions as EC
           import time
-          from bs4 import BeautifulSoup
+          import requests
+          import feedparser
           
-          def get_substack_feed(url):
-              # Add /feed if not present
-              if not url.endswith('/feed'):
-                  url = url.rstrip('/') + '/feed'
+          def get_substack_feed():
+              chrome_options = Options()
+              chrome_options.add_argument('--headless')
+              chrome_options.add_argument('--no-sandbox')
+              chrome_options.add_argument('--disable-dev-shm-usage')
+              chrome_options.add_argument('--disable-gpu')
+              chrome_options.add_argument('--window-size=1920x1080')
+              chrome_options.add_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36')
               
-              # Set up headers to look more like a browser
-              headers = {
-                  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-                  'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-                  'Accept-Language': 'en-US,en;q=0.5',
-                  'Accept-Encoding': 'gzip, deflate, br',
-                  'Connection': 'keep-alive',
-                  'Upgrade-Insecure-Requests': '1'
-              }
+              service = Service('/usr/bin/chromedriver')
+              driver = webdriver.Chrome(service=service, options=chrome_options)
               
-              # Try to fetch the feed with retries
-              max_retries = 3
-              for attempt in range(max_retries):
-                  try:
-                      response = requests.get(url, headers=headers, timeout=30)
-                      response.raise_for_status()
+              try:
+                  # First visit the main page to get cookies
+                  driver.get('https://kavinpalanichamy.substack.com')
+                  time.sleep(5)  # Wait for any JavaScript to load
+                  
+                  # Now try to get the RSS feed
+                  driver.get('https://kavinpalanichamy.substack.com/feed')
+                  time.sleep(5)
+                  
+                  # Get the page source
+                  page_source = driver.page_source
+                  
+                  # If we got XML content, save it
+                  if '<?xml' in page_source or '<rss' in page_source:
+                      with open('posts/rss_feed.xml', 'w', encoding='utf-8') as f:
+                          f.write(page_source)
+                      print("Successfully fetched and saved RSS feed")
+                      return True
+                  else:
+                      print("Did not receive valid RSS content")
+                      return False
                       
-                      # Parse the feed
-                      feed = feedparser.parse(response.content)
-                      
-                      # Check if we got a valid feed
-                      if feed.entries:
-                          return response.content
-                          
-                      # If no entries, might be getting blocked
-                      time.sleep(5)  # Wait before retry
-                          
-                  except Exception as e:
-                      print(f"Attempt {attempt + 1} failed: {str(e)}")
-                      if attempt < max_retries - 1:
-                          time.sleep(10)  # Wait longer between retries
-                          
-              return None
+              except Exception as e:
+                  print(f"Error: {str(e)}")
+                  return False
+                  
+              finally:
+                  driver.quit()
           
-          # Main execution
-          url = "https://kavinpalanichamy.substack.com"
-          content = get_substack_feed(url)
-          
-          if content:
-              with open('posts/rss_feed.xml', 'wb') as f:
-                  f.write(content)
-              print("Successfully fetched and saved RSS feed")
-              exit(0)
-          else:
-              print("Failed to fetch RSS feed after all retries")
-              exit(1)
+          # Run the fetch
+          success = get_substack_feed()
+          exit(0 if success else 1)
           EOF
           
           python fetch_feed.py
         
       - name: Commit and push changes
+        if: success()
         run: |
           if [ -f posts/rss_feed.xml ] && [ -s posts/rss_feed.xml ]; then
             if ! git diff --quiet posts/rss_feed.xml; then
