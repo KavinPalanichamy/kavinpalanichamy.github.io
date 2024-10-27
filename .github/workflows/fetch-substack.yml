@@ -1,0 +1,37 @@
+name: Fetch Substack Posts
+
+on:
+  workflow_dispatch:  # Allows manual triggering
+  schedule:
+    - cron: '0 0 * * *'  # Runs every day at midnight UTC
+
+jobs:
+  fetch-posts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3  # Updated to v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3  # Updated to v3
+        with:
+          node-version: '18'  # Updated to more recent LTS version
+
+      - name: Install Dependencies
+        run: npm install rss-parser
+
+      - name: Create Posts Directory
+        run: mkdir -p posts
+
+      - name: Fetch Substack RSS
+        run: node .github/scripts/fetch-posts.js
+        env:
+          NODE_OPTIONS: --no-warnings
+
+      - name: Commit New Posts
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add posts/
+          # Only commit if there are changes
+          git diff --staged --quiet || (git commit -m "Add new Substack posts" && git push)
