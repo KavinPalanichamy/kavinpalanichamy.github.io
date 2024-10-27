@@ -21,11 +21,11 @@ jobs:
         run: |
           FEED_URL="https://kavinpalanichamy.substack.com/feed"
           echo "Checking feed URL: $FEED_URL"
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" -A "SubstackFetcher/1.0 (GitHub Actions)" "$FEED_URL")
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36" "$FEED_URL")
           echo "Feed URL status code: $STATUS"
           if [ "$STATUS" != "200" ]; then
             echo "Error: Feed URL returned status $STATUS"
-            curl -v "$FEED_URL"
+            curl -v -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36" "$FEED_URL"
             exit 1
           fi
 

@@ -9,6 +9,9 @@ const POSTS_DIR = './posts';
 // Custom user agent to identify our bot
 const USER_AGENT = 'SubstackFetcher/1.0 (GitHub Actions; +https://github.com/kavinpalanichamy/kavinpalanichamy.github.io)';
 
+const MAX_RETRIES = 3;
+const INITIAL_DELAY = 1000; // 1 second
+
 async function sanitizeFileName(title) {
   return title
     .toLowerCase()
@@ -58,16 +61,26 @@ async function fetchPosts() {
     console.log(`Fetching RSS feed from ${FEED_URL}...`);
     console.log('Using User-Agent:', USER_AGENT);
 
-    const feed = await parser.parseURL(FEED_URL);
+    const feed = await fetchWithRetry(FEED_URL, {
+      headers: {
+        'User-Agent': USER_AGENT,
+        'Accept': 'application/rss+xml, application/xml, application/atom+xml, text/xml;q=0.9, */*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.9',
+      },
+    });
+
+    // Then parse the feed content
+    const feedContent = await feed.text();
+    const parsedFeed = await parser.parseString(feedContent);
     
-    if (!feed || !feed.items) {
+    if (!parsedFeed || !parsedFeed.items) {
       throw new Error('Invalid feed structure received');
     }
 
-    console.log(`Successfully fetched feed. Found ${feed.items.length} items.`);
+    console.log(`Successfully fetched feed. Found ${parsedFeed.items.length} items.`);
     const fetchedPosts = [];
 
-    for (const item of feed.items) {
+    for (const item of parsedFeed.items) {
       if (!item.title) {
         console.warn('Skipping item with no title');
         continue;
@@ -122,6 +135,27 @@ try {
 } catch (error) {
   console.error('Error creating posts directory:', error);
   process.exit(1);
+}
+
+async function fetchWithRetry(url, options, retries = 0) {
+  try {
+    const response = await fetch(url, options);
+    if (response.status === 403 && retries < MAX_RETRIES) {
+      const delay = INITIAL_DELAY * Math.pow(2, retries);
+      console.log(`Received 403, retrying in ${delay}ms...`);
+      await new Promise(resolve => setTimeout(resolve, delay));
+      return fetchWithRetry(url, options, retries + 1);
+    }
+    return response;
+  } catch (error) {
+    if (retries < MAX_RETRIES) {
+      const delay = INITIAL_DELAY * Math.pow(2, retries);
+      console.log(`Request failed, retrying in ${delay}ms...`);
+      await new Promise(resolve => setTimeout(resolve, delay));
+      return fetchWithRetry(url, options, retries + 1);
+    }
+    throw error;
+  }
 }
 
 fetchPosts();
