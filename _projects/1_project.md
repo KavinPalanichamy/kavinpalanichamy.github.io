@@ -4,7 +4,7 @@ title: Indoor Positioning for Mobile Robots
 description: Thanks to UWB technology, robots can now navigate indoors with centimeter-level precision
 img: assets/img/1_1.jpg
 importance: 1
-category: work
+category: project gallery
 related_publications: false
 ---
 
