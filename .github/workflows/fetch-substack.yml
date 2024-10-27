@@ -2,7 +2,7 @@ name: Fetch RSS Feed
 
 on:
   schedule:
-    - cron: '0 */2 * * *'  # Run every 2 hours instead of every hour
+    - cron: '0 */2 * * *'  # Run every 2 hours
   workflow_dispatch:
 
 jobs:
@@ -18,12 +18,10 @@ jobs:
         with:
           python-version: '3.x'
           
-      - name: Install Chrome and dependencies
+      - name: Install dependencies
         run: |
-          sudo apt-get update
-          sudo apt-get install -y chromium-browser chromium-chromedriver
           python -m pip install --upgrade pip
-          pip install selenium requests feedparser webdriver_manager
+          pip install requests feedparser
         
       - name: Create posts directory
         run: mkdir -p posts
@@ -32,63 +30,97 @@ jobs:
         id: fetch_rss
         run: |
           cat > fetch_feed.py << 'EOF'
-          from selenium import webdriver
-          from selenium.webdriver.chrome.options import Options
-          from selenium.webdriver.chrome.service import Service
-          from selenium.webdriver.common.by import By
-          from selenium.webdriver.support.ui import WebDriverWait
-          from selenium.webdriver.support import expected_conditions as EC
-          import time
           import requests
           import feedparser
+          import json
+          import time
+          from urllib.parse import quote
           
-          def get_substack_feed():
-              chrome_options = Options()
-              chrome_options.add_argument('--headless')
-              chrome_options.add_argument('--no-sandbox')
-              chrome_options.add_argument('--disable-dev-shm-usage')
-              chrome_options.add_argument('--disable-gpu')
-              chrome_options.add_argument('--window-size=1920x1080')
-              chrome_options.add_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36')
+          def get_feed_content():
+              # Try different RSS aggregator services
+              services = [
+                  f"https://rsshub.app/substack/kavinpalanichamy.substack.com",
+                  f"https://api.rss2json.com/v1/api.json?rss_url={quote('https://kavinpalanichamy.substack.com/feed')}",
+                  "https://fetchrss.com/api/feed/create"
+              ]
               
-              service = Service('/usr/bin/chromedriver')
-              driver = webdriver.Chrome(service=service, options=chrome_options)
+              headers = {
+                  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                  'Accept': 'application/json, application/xml, text/plain, */*',
+                  'Accept-Language': 'en-US,en;q=0.9',
+              }
               
-              try:
-                  # First visit the main page to get cookies
-                  driver.get('https://kavinpalanichamy.substack.com')
-                  time.sleep(5)  # Wait for any JavaScript to load
-                  
-                  # Now try to get the RSS feed
-                  driver.get('https://kavinpalanichamy.substack.com/feed')
-                  time.sleep(5)
-                  
-                  # Get the page source
-                  page_source = driver.page_source
-                  
-                  # If we got XML content, save it
-                  if '<?xml' in page_source or '<rss' in page_source:
-                      with open('posts/rss_feed.xml', 'w', encoding='utf-8') as f:
-                          f.write(page_source)
-                      print("Successfully fetched and saved RSS feed")
-                      return True
-                  else:
-                      print("Did not receive valid RSS content")
-                      return False
+              for service_url in services:
+                  try:
+                      print(f"Trying service: {service_url}")
+                      response = requests.get(service_url, headers=headers, timeout=30)
+                      response.raise_for_status()
                       
-              except Exception as e:
-                  print(f"Error: {str(e)}")
-                  return False
-                  
-              finally:
-                  driver.quit()
+                      content = response.content
+                      
+                      # Check if we got valid content
+                      if b'<?xml' in content or b'<rss' in content:
+                          return content
+                      elif 'api.rss2json.com' in service_url:
+                          # Handle RSS2JSON specific response
+                          data = response.json()
+                          if data.get('status') == 'ok' and data.get('items'):
+                              # Convert JSON back to RSS format
+                              rss = f'''<?xml version="1.0" encoding="UTF-8"?>
+                              <rss version="2.0">
+                                <channel>
+                                  <title>{data.get('feed', {}).get('title', '')}</title>
+                                  <link>{data.get('feed', {}).get('link', '')}</link>
+                                  <description>{data.get('feed', {}).get('description', '')}</description>
+                                  {''.join(f"""
+                                  <item>
+                                    <title>{item.get('title', '')}</title>
+                                    <link>{item.get('link', '')}</link>
+                                    <description>{item.get('description', '')}</description>
+                                    <pubDate>{item.get('pubDate', '')}</pubDate>
+                                  </item>""" for item in data.get('items', []))}
+                                </channel>
+                              </rss>'''
+                              return rss.encode('utf-8')
+                      
+                      print(f"Invalid content format from {service_url}")
+                      time.sleep(2)  # Wait before trying next service
+                      
+                  except Exception as e:
+                      print(f"Error with {service_url}: {str(e)}")
+                      time.sleep(2)  # Wait before trying next service
+                      continue
+              
+              return None
           
-          # Run the fetch
-          success = get_substack_feed()
-          exit(0 if success else 1)
+          # Main execution
+          content = get_feed_content()
+          
+          if content:
+              with open('posts/rss_feed.xml', 'wb') as f:
+                  f.write(content)
+              print("Successfully fetched and saved RSS feed")
+              exit(0)
+          else:
+              print("Failed to fetch RSS feed from all services")
+              exit(1)
           EOF
           
           python fetch_feed.py
+        
+      - name: Verify RSS Feed
+        run: |
+          if [ -f posts/rss_feed.xml ]; then
+            if grep -q "<rss" posts/rss_feed.xml || grep -q "<?xml" posts/rss_feed.xml; then
+              echo "RSS feed appears valid"
+            else
+              echo "RSS feed doesn't contain expected XML content"
+              exit 1
+            fi
+          else
+            echo "RSS feed file not found"
+            exit 1
+          fi
         
       - name: Commit and push changes
         if: success()
