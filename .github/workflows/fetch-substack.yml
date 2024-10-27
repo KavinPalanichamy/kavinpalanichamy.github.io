@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Fetch all history to ensure proper git operations
         
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -21,7 +23,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install requests feedparser
+          pip install requests feedparser python-dateutil
         
       - name: Create posts directory
         run: mkdir -p posts
@@ -34,10 +36,25 @@ jobs:
           import feedparser
           import json
           import time
+          import os
+          from datetime import datetime
+          from dateutil import parser
           from urllib.parse import quote
-          
+
+          def parse_existing_feed():
+              try:
+                  if os.path.exists('posts/rss_feed.xml'):
+                      existing_feed = feedparser.parse('posts/rss_feed.xml')
+                      existing_entries = {entry.link: parser.parse(entry.published) 
+                                       for entry in existing_feed.entries 
+                                       if hasattr(entry, 'link') and hasattr(entry, 'published')}
+                      return existing_entries
+                  return {}
+              except Exception as e:
+                  print(f"Error parsing existing feed: {str(e)}")
+                  return {}
+
           def get_feed_content():
-              # Try different RSS aggregator services
               services = [
                   f"https://rsshub.app/substack/kavinpalanichamy.substack.com",
                   f"https://api.rss2json.com/v1/api.json?rss_url={quote('https://kavinpalanichamy.substack.com/feed')}",
@@ -50,6 +67,9 @@ jobs:
                   'Accept-Language': 'en-US,en;q=0.9',
               }
               
+              existing_entries = parse_existing_feed()
+              new_content = None
+              
               for service_url in services:
                   try:
                       print(f"Trying service: {service_url}")
@@ -58,40 +78,56 @@ jobs:
                       
                       content = response.content
                       
-                      # Check if we got valid content
                       if b'<?xml' in content or b'<rss' in content:
-                          return content
+                          new_feed = feedparser.parse(content)
+                          has_new_entries = any(
+                              entry.link not in existing_entries or
+                              parser.parse(entry.published) > existing_entries[entry.link]
+                              for entry in new_feed.entries
+                              if hasattr(entry, 'link') and hasattr(entry, 'published')
+                          )
+                          
+                          if has_new_entries:
+                              new_content = content
+                              break
+                          
                       elif 'api.rss2json.com' in service_url:
-                          # Handle RSS2JSON specific response
                           data = response.json()
                           if data.get('status') == 'ok' and data.get('items'):
-                              # Convert JSON back to RSS format
-                              rss = f'''<?xml version="1.0" encoding="UTF-8"?>
-                              <rss version="2.0">
-                                <channel>
-                                  <title>{data.get('feed', {}).get('title', '')}</title>
-                                  <link>{data.get('feed', {}).get('link', '')}</link>
-                                  <description>{data.get('feed', {}).get('description', '')}</description>
-                                  {''.join(f"""
-                                  <item>
-                                    <title>{item.get('title', '')}</title>
-                                    <link>{item.get('link', '')}</link>
-                                    <description>{item.get('description', '')}</description>
-                                    <pubDate>{item.get('pubDate', '')}</pubDate>
-                                  </item>""" for item in data.get('items', []))}
-                                </channel>
-                              </rss>'''
-                              return rss.encode('utf-8')
+                              has_new_entries = any(
+                                  item['link'] not in existing_entries or
+                                  parser.parse(item['pubDate']) > existing_entries[item['link']]
+                                  for item in data.get('items', [])
+                              )
+                              
+                              if has_new_entries:
+                                  rss = f'''<?xml version="1.0" encoding="UTF-8"?>
+                                  <rss version="2.0">
+                                    <channel>
+                                      <title>{data.get('feed', {}).get('title', '')}</title>
+                                      <link>{data.get('feed', {}).get('link', '')}</link>
+                                      <description>{data.get('feed', {}).get('description', '')}</description>
+                                      {''.join(f"""
+                                      <item>
+                                        <title>{item.get('title', '')}</title>
+                                        <link>{item.get('link', '')}</link>
+                                        <description>{item.get('description', '')}</description>
+                                        <pubDate>{item.get('pubDate', '')}</pubDate>
+                                      </item>""" for item in data.get('items', []))}
+                                    </channel>
+                                  </rss>'''
+                                  new_content = rss.encode('utf-8')
+                                  break
                       
-                      print(f"Invalid content format from {service_url}")
-                      time.sleep(2)  # Wait before trying next service
+                      print(f"No new entries found in {service_url}")
+                      time.sleep(2)
                       
                   except Exception as e:
                       print(f"Error with {service_url}: {str(e)}")
-                      time.sleep(2)  # Wait before trying next service
+                      time.sleep(2)
                       continue
               
-              return None
+              return new_content
           
           # Main execution
           content = get_feed_content()
@@ -99,10 +135,10 @@ jobs:
           if content:
               with open('posts/rss_feed.xml', 'wb') as f:
                   f.write(content)
-              print("Successfully fetched and saved RSS feed")
+              print("Successfully fetched and saved RSS feed with new entries")
               exit(0)
           else:
-              print("Failed to fetch RSS feed from all services")
+              print("No new entries found or failed to fetch RSS feed")
               exit(1)
           EOF
           
@@ -113,6 +149,7 @@ jobs:
           if [ -f posts/rss_feed.xml ]; then
             if grep -q "<rss" posts/rss_feed.xml || grep -q "<?xml" posts/rss_feed.xml; then
               echo "RSS feed appears valid"
+              cat posts/rss_feed.xml  # Debug: Print content
             else
               echo "RSS feed doesn't contain expected XML content"
               exit 1
@@ -126,11 +163,13 @@ jobs:
         if: success()
         run: |
           if [ -f posts/rss_feed.xml ] && [ -s posts/rss_feed.xml ]; then
+            git config --local user.email "github-actions[bot]@users.noreply.github.com"
+            git config --local user.name "github-actions[bot]"
+            
             if ! git diff --quiet posts/rss_feed.xml; then
-              git config --local user.email "github-actions[bot]@users.noreply.github.com"
-              git config --local user.name "github-actions[bot]"
               git add posts/rss_feed.xml
-              git commit -m "Update RSS feed [skip ci]"
+              git commit -m "Update RSS feed with new entries [skip ci]"
+              git push
             else
               echo "No changes to RSS feed"
             fi
