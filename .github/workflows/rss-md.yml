@@ -3,6 +3,7 @@ name: Generate Markdown from RSS Feed
 on:
   schedule:
     - cron: '0 0 * * *'  # Runs every 24 hours
+  workflow_dispatch:  # Allows manual triggering of the workflow
 
 jobs:
   generate_md:
