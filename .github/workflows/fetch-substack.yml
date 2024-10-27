@@ -2,32 +2,45 @@ name: Fetch RSS Feed
 
 on:
   schedule:
-    - cron: '0 * * * *'  # This schedule runs every hour. Adjust as needed.
-  workflow_dispatch:  # Allows you to manually trigger the workflow.
+    - cron: '0 * * * *'  # Runs every hour
+  workflow_dispatch:      # Manual trigger option
 
 jobs:
   fetch_rss:
     runs-on: ubuntu-latest
-
+    
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Create posts directory if it doesn't exist
+        uses: actions/checkout@v3      # Updated to v3
+        
+      - name: Create posts directory
         run: mkdir -p posts
-
+        
       - name: Fetch RSS Feed
         id: fetch_rss
         run: |
-          RSS_URL="https://kavinpalanichamy.substack.com"  # Replace with your RSS feed URL.
-          curl -s "$RSS_URL" -o posts/rss_feed.xml
-          echo "RSS feed fetched successfully."
-
-      - name: Save RSS Feed to file
+          # Substack RSS feed URL format correction
+          RSS_URL="https://kavinpalanichamy.substack.com/feed"  # Added /feed
+          curl -L -s "$RSS_URL" -o posts/rss_feed.xml
+          
+          # Check if feed was fetched successfully
+          if [ ! -s posts/rss_feed.xml ]; then
+            echo "Error: RSS feed is empty or failed to fetch"
+            exit 1
+          fi
+          
+          echo "RSS feed fetched successfully"
+        
+      - name: Commit and push changes
         run: |
-          echo "Saving RSS feed to posts directory..."
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add ./posts/rss_feed.xml
-          git commit -m "Update RSS feed"
+          # Only commit if there are changes
+          if git diff --quiet posts/rss_feed.xml; then
+            echo "No changes to RSS feed"
+            exit 0
+          fi
+          
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add posts/rss_feed.xml
+          git commit -m "Update RSS feed [skip ci]"
           git push
