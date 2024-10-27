@@ -13,19 +13,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Create posts directory if it doesn't exist
+        run: mkdir -p posts
+
       - name: Fetch RSS Feed
         id: fetch_rss
         run: |
           RSS_URL="https://kavinpalanichamy.substack.com"  # Replace with your RSS feed URL.
-          curl -s "$RSS_URL" -o rss_feed.xml
+          curl -s "$RSS_URL" -o posts/rss_feed.xml
           echo "RSS feed fetched successfully."
 
       - name: Save RSS Feed to file
         run: |
-          echo "Saving RSS feed to repository..."
-          mv rss_feed.xml ./rss_feed.xml
+          echo "Saving RSS feed to posts directory..."
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add ./rss_feed.xml
+          git add ./posts/rss_feed.xml
           git commit -m "Update RSS feed"
           git push
