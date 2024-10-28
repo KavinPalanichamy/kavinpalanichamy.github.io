@@ -4,14 +4,14 @@ from datetime import datetime
 
 # Load and clean up the XML content
 with open('posts/rss_feed.xml') as xml_file:
-    # Read and skip script tags
+    # Read the XML file and skip script tags if present
     content = ''.join([line for line in xml_file if not line.strip().startswith('<script')])
     rss_content = xmltodict.parse(content)
 
 # Extract items safely
 items = rss_content['rss']['channel'].get('item', [])
 
-# Convert to list if a single item is returned as a dictionary
+# Convert single item to list if necessary
 if isinstance(items, dict):
     items = [items]
 
@@ -19,8 +19,8 @@ if isinstance(items, dict):
 os.makedirs('_posts', exist_ok=True)
 
 # Create Markdown files for each item
-for item in items:
-    if isinstance(item, dict):  # Ensure each item is a dictionary
+for idx, item in enumerate(items):
+    if isinstance(item, dict):  # Only proceed if item is a dictionary
         title = item.get('title', '').replace(" ", "-").lower()
         pub_date = datetime.strptime(item.get('pubDate', ''), '%a, %d %b %Y %H:%M:%S %z')
         filename = f"_posts/{pub_date.strftime('%Y-%m-%d')}-{title}.md"
@@ -40,3 +40,5 @@ redirect: {item.get('link', '')}
         if not os.path.exists(filename):
             with open(filename, 'w') as md_file:
                 md_file.write(md_content)
+    else:
+        print(f"Warning: Item at index {idx} is not a dictionary. Item type: {type(item)}, Content: {item}")
