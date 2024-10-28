@@ -22,16 +22,24 @@ else:
 # Ensure the _posts directory exists
 os.makedirs('_posts', exist_ok=True)
 
+# Date parsing function with multiple format support
+def parse_date(date_str):
+    for fmt in ('%a, %d %b %Y %H:%M:%S %z', '%Y-%m-%d %H:%M:%S'):
+        try:
+            return datetime.strptime(date_str, fmt)
+        except ValueError:
+            continue
+    return None  # Return None if no format matches
+
 # Create Markdown files for each valid dictionary item
 for item in items:
     # Confirm that item has the required structure
     title = item.get('title', '').replace(" ", "-").lower()
     pub_date_str = item.get('pubDate', '')
 
-    try:
-        pub_date = datetime.strptime(pub_date_str, '%a, %d %b %Y %H:%M:%S %z')
-    except ValueError as e:
-        print(f"Skipping item due to date parsing error: {e}, pubDate: {pub_date_str}")
+    pub_date = parse_date(pub_date_str)
+    if pub_date is None:
+        print(f"Skipping item due to unrecognized date format: {pub_date_str}")
         continue
 
     filename = f"_posts/{pub_date.strftime('%Y-%m-%d')}-{title}.md"
