@@ -6,6 +6,7 @@ from datetime import datetime
 with open('posts/rss_feed.xml') as xml_file:
     rss_content = xmltodict.parse(xml_file.read())
 
+# Get the list of items from the RSS feed
 items = rss_content['rss']['channel']['item']
 
 # Ensure _posts directory exists
@@ -13,17 +14,19 @@ os.makedirs('_posts', exist_ok=True)
 
 # Create Markdown files for each item
 for item in items:
-    title = item['title'].replace(" ", "-").lower()
-    pub_date = datetime.strptime(item['pubDate'], '%Y-%m-%d %H:%M:%S')
+    title = item.get('title', '').replace(" ", "-").lower()
+    pub_date = datetime.strptime(item.get('pubDate', ''), '%a, %d %b %Y %H:%M:%S %z')
     filename = f"_posts/{pub_date.strftime('%Y-%m-%d')}-{title}.md"
 
     md_content = f"""---
 layout: post
-title: {item['title']}
+title: {item.get('title', '')}
 date: {pub_date.strftime('%Y-%m-%d %H:%M:%S')}
-description: {item['description']}
-redirect: {item['link']}
+description: {item.get('description', '')}
+redirect: {item.get('link', '')}
 ---
+
+{item.get('content:encoded', '')}
 """
 
     # Check if the file already exists to avoid overwriting
