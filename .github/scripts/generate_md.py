@@ -4,28 +4,39 @@ from datetime import datetime
 
 # Load and clean up the XML content
 with open('posts/rss_feed.xml') as xml_file:
-    # Read the XML file and skip script tags if present
+    # Read the XML file, skipping script tags if present
     content = ''.join([line for line in xml_file if not line.strip().startswith('<script')])
     rss_content = xmltodict.parse(content)
 
-# Extract items safely
+# Safely extract items
 items = rss_content['rss']['channel'].get('item', [])
 
-# Convert single item to list if necessary
-if isinstance(items, dict):
+# Ensure items is a list of dictionaries
+if isinstance(items, dict):  # If a single dictionary, wrap in a list
     items = [items]
+elif isinstance(items, list):
+    items = [item for item in items if isinstance(item, dict)]  # Filter out non-dictionaries
+else:
+    items = []  # Default to empty list if structure is unexpected
 
 # Ensure the _posts directory exists
 os.makedirs('_posts', exist_ok=True)
 
-# Create Markdown files for each item
-for idx, item in enumerate(items):
-    if isinstance(item, dict):  # Only proceed if item is a dictionary
-        title = item.get('title', '').replace(" ", "-").lower()
-        pub_date = datetime.strptime(item.get('pubDate', ''), '%a, %d %b %Y %H:%M:%S %z')
-        filename = f"_posts/{pub_date.strftime('%Y-%m-%d')}-{title}.md"
+# Create Markdown files for each valid dictionary item
+for item in items:
+    # Confirm that item has the required structure
+    title = item.get('title', '').replace(" ", "-").lower()
+    pub_date_str = item.get('pubDate', '')
 
-        md_content = f"""---
+    try:
+        pub_date = datetime.strptime(pub_date_str, '%a, %d %b %Y %H:%M:%S %z')
+    except ValueError as e:
+        print(f"Skipping item due to date parsing error: {e}, pubDate: {pub_date_str}")
+        continue
+
+    filename = f"_posts/{pub_date.strftime('%Y-%m-%d')}-{title}.md"
+    
+    md_content = f"""---
 layout: post
 title: {item.get('title', '')}
 date: {pub_date.strftime('%Y-%m-%d %H:%M:%S')}
@@ -36,9 +47,9 @@ redirect: {item.get('link', '')}
 {item.get('content:encoded', '')}
 """
 
-        # Check if the file already exists to avoid overwriting
-        if not os.path.exists(filename):
-            with open(filename, 'w') as md_file:
-                md_file.write(md_content)
+    # Check if the file already exists to avoid overwriting
+    if not os.path.exists(filename):
+        with open(filename, 'w') as md_file:
+            md_file.write(md_content)
     else:
-        print(f"Warning: Item at index {idx} is not a dictionary. Item type: {type(item)}, Content: {item}")
+        print(f"File {filename} already exists. Skipping creation.")
