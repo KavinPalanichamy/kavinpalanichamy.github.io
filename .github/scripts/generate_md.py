@@ -1,20 +1,26 @@
-# Load and parse the XML file
-with open('posts/rss_feed.xml') as xml_file:
-    rss_content = xmltodict.parse(xml_file.read())
+import os
+import xmltodict
+from datetime import datetime
 
-# Get the list of items from the RSS feed
+# Load and clean up the XML content
+with open('posts/rss_feed.xml') as xml_file:
+    # Read and skip script tags
+    content = ''.join([line for line in xml_file if not line.strip().startswith('<script')])
+    rss_content = xmltodict.parse(content)
+
+# Extract items safely
 items = rss_content['rss']['channel'].get('item', [])
 
-# Convert to list if single item is returned as dict
+# Convert to list if a single item is returned as a dictionary
 if isinstance(items, dict):
     items = [items]
 
-# Ensure _posts directory exists
+# Ensure the _posts directory exists
 os.makedirs('_posts', exist_ok=True)
 
 # Create Markdown files for each item
 for item in items:
-    if isinstance(item, dict):  # Ensure item is a dictionary
+    if isinstance(item, dict):  # Ensure each item is a dictionary
         title = item.get('title', '').replace(" ", "-").lower()
         pub_date = datetime.strptime(item.get('pubDate', ''), '%a, %d %b %Y %H:%M:%S %z')
         filename = f"_posts/{pub_date.strftime('%Y-%m-%d')}-{title}.md"
