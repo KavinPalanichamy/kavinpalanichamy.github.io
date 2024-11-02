@@ -3,7 +3,7 @@ layout: page
 title: WaveSense
 description: A proposal to determine signal propagation in varied terrains using satellite data. The idea was developed as part of a hackathon event.The proposal won the preliminary round and was runner-up in the finals.
 img: assets/img/4_2.jpg
-importance: 2
+importance: 4
 category: project gallery
 related_publications: false
 ---

@@ -3,7 +3,7 @@ layout: page
 title: T3S - Automated Textile Handling with AI-Enabled Defect Detection
 description: T3S is an innovative solution for automated textile handling, integrating advanced AI for real-time defect detection, enhancing quality control and efficienct sorting in textile processing.
 img: assets/img/6_1.jpg
-importance: 2
+importance: 3
 category: project gallery
 related_publications: false
 ---
