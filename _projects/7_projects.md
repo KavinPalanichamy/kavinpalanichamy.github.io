@@ -12,11 +12,11 @@ This project explores the design, construction, and control of a ball-on-plate (
 
 <div class="row justify-content-center">
     <div class="col-sm-8 mt-3 mt-md-0">
-        {% include video.liquid path="assets/video/7_2.mp4" class="img-fluid rounded z-depth-1" controls=true %}
+        {% include video.liquid path="assets/video/7_4.mp4" class="img-fluid rounded z-depth-1" controls=true %}
     </div>
 </div>
 <div class="caption text-center">
-     Video 1. Ball Balancing demonstration.
+     Video 2. Circle Trajectory demonstration. Simulated system vs. Real System.
 </div>
 
 
@@ -70,6 +70,14 @@ A detailed Simulink model was created to:
      Fig 1. Simulink Model Overview
 </div>
 
+<div class="row justify-content-center">
+    <div class="col-sm-8 mt-3 mt-md-0">
+        {% include video.liquid path="assets/video/7_2.mp4" class="img-fluid rounded z-depth-1" controls=true %}
+    </div>
+</div>
+<div class="caption text-center">
+     Video 1. Ball Balancing demonstration.
+</div>
 
 ## Results and Performance
 
@@ -82,16 +90,6 @@ The physical system was successfully assembled and balanced, achieving stable co
 *   **Steady-State Error:**A slight steady-state error of approximately 25mm was observed primarily due to inherent biases of the system.
 *   **Trajectory Tracking:** The system was able to track predefined trajectories, including circles, infinity symbols, and squares
 
-<div class="row justify-content-center">
-    <div class="col-sm-8 mt-3 mt-md-0">
-        <video width="560" height="315" controls>
-            <source src="assets/video/7_2.webm" type="video/webm">
-        </video>
-    </div>
-</div>
-<div class="caption text-center">
-     Video 2. Circle Trajectory demonstration. Simulated system vs. Real System.
-</div>
 
 ### Circle Trajectory
 
