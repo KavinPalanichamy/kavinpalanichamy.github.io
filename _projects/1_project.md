@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Indoor Positioning for Mobile Robots
-description: Thanks to UWB technology, robots can now navigate indoors with centimeter-level precision
+description: Thanks to UWB technology, robots can now navigate indoors with centimeter-level precision. The project was carried out at PIAP Lukasiewicz, a leading Polish government defence research institute.
 img: assets/img/1_1.jpg
 importance: 2
 category: project gallery

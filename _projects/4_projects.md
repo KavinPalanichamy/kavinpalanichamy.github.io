@@ -1,7 +1,7 @@
 ---
 layout: page
-title: WaveSense
-description: A proposal to determine signal propagation in varied terrains using satellite data. The idea was developed as part of a hackathon event.The proposal won the preliminary round and was runner-up in the finals.
+title: ESA Hackathon
+description: A proposal to determine signal propagation in varied terrains using satellite data. The idea was developed as part of a hackathon event organized by European space Agency.The proposal won the preliminary round and was runner-up in the finals.
 img: assets/img/4_2.jpg
 importance: 4
 category: project gallery

@@ -16,7 +16,7 @@ This project explores the design, construction, and control of a ball-on-plate (
     </div>
 </div>
 <div class="caption text-center">
-     Video 1. Circle Trajectory demonstration. Simulated system vs. Real System.
+     Video 1. Circle Trajectory demonstration. 
 </div>
 
 
@@ -110,7 +110,7 @@ The physical system was successfully assembled and balanced, achieving stable co
     </div>
 </div>
 <div class="caption text-center">
-     Fig 3. Infinity trajectory
+     Fig 3. Lemniscate curve trajectory. Simulated system vs. Real System.
 </div>
 
 ## Challenges and Future Work

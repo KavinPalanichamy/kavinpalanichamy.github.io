@@ -1,7 +1,7 @@
 ---
 layout: page
-title: T3S
-description: T3S is an innovative solution for automated textile handling, integrating advanced AI for real-time defect detection, enhancing quality control and efficienct sorting in textile processing.
+title: T3S - Textile Sorting, Spreading and Seperation
+description: T3S is an innovative solution for automated textile handling developed by Desion GmbH, integrating advanced AI for real-time defect detection, enhancing quality control and efficienct automated sorting in textile processing.
 img: assets/img/6_1.jpg
 importance: 1
 category: project gallery
