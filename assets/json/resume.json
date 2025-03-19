@@ -98,7 +98,7 @@
     ]
   },
   {
-    "name": "Automation",
+    "name": "Automation & Robotics",
     "level": "Junior",
     "icon": "fa-solid fa-robot",
     "keywords": [
@@ -107,6 +107,15 @@
       "Control Systems",
       "Inverse Kinematics",
       "MATLAB/Simulink"
+    ]
+  },
+  {
+    "name": "Mechanical Design & Prototyping",
+    "level": "Junior",
+    "icon": "fa-solid fa-robot",
+    "keywords": [
+      "Autodesk Inventor",
+      "FDM 3D Printing"
     ]
   }
   ],
@@ -123,7 +132,7 @@
     },
     {
       "language": "Tamil",
-      "fluency": "Elimentary proficiency",
+      "fluency": "Fluent",
       "icon": ""
     }
   ],

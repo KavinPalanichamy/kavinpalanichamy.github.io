@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Fabric Gripper
-description: A project focused on designing and 3D printing a robotic gripper capable of lifting delicate, soft cloths. The project demonstrates iterative prototyping for precision and gentleness in handling.
+description: A project focused on prototyping a pneumatic gripper capable of grasping and lifting delicate, soft cloths.
 img: assets/img/5_1.jpg
 importance: 2
 category: project gallery
@@ -23,6 +23,6 @@ Key highlights of the project include:
     </div>
 </div>
 <div class="caption">
-    3D Printed Prototype for Soft Material gripping
+    3D Printed Prototype for Soft Material gripping. Copyright : Desion GmbH
 </div>
 

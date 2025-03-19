@@ -18,7 +18,6 @@ selected_papers: true # includes a list of papers marked as "selected={true}"
 social: false # includes social icons at the bottom of the page
 ---
 
-I am a final-year Mechatronics student with a passion for robotics and automation. I have a strong foundation in programming and designing robotic systems, with proficiency in Python, C, and C++. My hands-on experience includes developing software for UWB-based indoor positioning systems, programming PLCs, and designing mechanical solutions using 3D printing and Autodesk Inventor. 
+I'm a final-year Mechatronics student passionate about robotics and automation. I have a solid foundation in software development, focusing on designing robotic systems, and I'm proficient in Python, C, and C++. Additionally, I am skilled in mechanical design and prototyping.
 
-Having completed internships at companies like Desion GmbH and Łukasiewicz – PIAP, I have honed my skills in automation and robotic applications. I am particularly interested in exploring innovative solutions that integrate hardware and software to enhance robotic capabilities. I am excited to start my career as a Robotics and Automation engineer in January 2025 and am eager to contribute to projects that push the boundaries of technology. 
-
+Having completed internships at companies like Desion GmbH and Łukasiewicz – PIAP, I have had the chance to improve my skills in automation and robotic applications. I am particularly interested in exploring innovative solutions that integrate hardware and software to enhance robotic capabilities.
