@@ -85,8 +85,6 @@ The physical system was successfully assembled and balanced, achieving stable co
 *   **Steady-State Error:**A slight steady-state error of approximately 25mm was observed primarily due to inherent biases of the system.
 *   **Trajectory Tracking:** The system was able to track predefined trajectories, including circles, infinity symbols, and squares
 
-**Trajectory Tracking Demonstration:**
-
 <div class="row justify-content-center">
     <div class="col-sm-8 mt-3 mt-md-0">
         <video width="560" height="315" controls>
@@ -96,8 +94,7 @@ The physical system was successfully assembled and balanced, achieving stable co
     </div>
 </div>
 <div class="caption text-center">
-     Video 2. Circle Trajectory demonstration.
-</div>
+     Video 2. Circle Trajectory demonstration. 
 
 ### Circle Trajectory
 
@@ -107,7 +104,7 @@ The physical system was successfully assembled and balanced, achieving stable co
     </div>
 </div>
 <div class="caption text-center">
-     Fig 2. Circle trajectory
+     Fig 2. Circle trajectory. Simulated system vs. Real System
 </div>
 
 ### Infinity Trajectory
@@ -118,7 +115,8 @@ The physical system was successfully assembled and balanced, achieving stable co
     </div>
 </div>
 <div class="caption text-center">
-     Fig 3. Infinity trajectory
+     Fig 3. Infinity trajectory. Simulated system vs. Real System.
+</div>
 </div>
 
 ## Challenges and Future Work
@@ -130,5 +128,3 @@ The physical system was successfully assembled and balanced, achieving stable co
 
 ## Conclusion
 This project successfully demonstrates the design and implementation of a ball-on-plate balancing system using a 3RRS parallel manipulator. The system achieved stable balancing and trajectory tracking using a PID controller and a Simulink model for simulation and tuning. Further improvements in control algorithms and hardware design could lead to even better performance.
-
-
