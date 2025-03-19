@@ -16,7 +16,7 @@ This project explores the design, construction, and control of a ball-on-plate (
     </div>
 </div>
 <div class="caption text-center">
-     Video 2. Circle Trajectory demonstration. Simulated system vs. Real System.
+     Video 1. Circle Trajectory demonstration. Simulated system vs. Real System.
 </div>
 
 
@@ -76,7 +76,7 @@ A detailed Simulink model was created to:
     </div>
 </div>
 <div class="caption text-center">
-     Video 1. Ball Balancing demonstration.
+     Video 2. Ball Balancing demonstration.
 </div>
 
 ## Results and Performance
