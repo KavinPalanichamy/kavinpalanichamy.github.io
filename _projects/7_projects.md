@@ -13,7 +13,7 @@ This project explores the design, construction, and control of a ball-on-plate (
 <div class="row justify-content-center">
     <div class="col-sm-8 mt-3 mt-md-0">
         <video width="560" height="315" controls>
-            <source src="assets/img/7_4.mp4" type="video/mp4">
+            <source src="assets/video/7_4.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
     </div>
@@ -88,13 +88,14 @@ The physical system was successfully assembled and balanced, achieving stable co
 <div class="row justify-content-center">
     <div class="col-sm-8 mt-3 mt-md-0">
         <video width="560" height="315" controls>
-            <source src="assets/img/7_2.mp4" type="video/mp4">
+            <source src="assets/video/7_2.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
     </div>
 </div>
 <div class="caption text-center">
-     Video 2. Circle Trajectory demonstration. 
+     Video 2. Circle Trajectory demonstration. Simulated system vs. Real System.
+</div>
 
 ### Circle Trajectory
 
@@ -115,8 +116,7 @@ The physical system was successfully assembled and balanced, achieving stable co
     </div>
 </div>
 <div class="caption text-center">
-     Fig 3. Infinity trajectory. Simulated system vs. Real System.
-</div>
+     Fig 3. Infinity trajectory
 </div>
 
 ## Challenges and Future Work
@@ -128,3 +128,4 @@ The physical system was successfully assembled and balanced, achieving stable co
 
 ## Conclusion
 This project successfully demonstrates the design and implementation of a ball-on-plate balancing system using a 3RRS parallel manipulator. The system achieved stable balancing and trajectory tracking using a PID controller and a Simulink model for simulation and tuning. Further improvements in control algorithms and hardware design could lead to even better performance.
+
