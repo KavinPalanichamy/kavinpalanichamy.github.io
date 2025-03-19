@@ -12,9 +12,7 @@ This project explores the design, construction, and control of a ball-on-plate (
 
 <div class="row justify-content-center">
     <div class="col-sm-8 mt-3 mt-md-0">
-        <video width="560" height="315" controls>
-            <source src="assets/video/7_4.webm" type="video/webm">
-        </video>
+        {% include video.liquid path="assets/video/7_2.mp4" class="img-fluid rounded z-depth-1" controls=true %}
     </div>
 </div>
 <div class="caption text-center">
