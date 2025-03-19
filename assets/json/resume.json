@@ -1,7 +1,7 @@
 {
   "basics": {
     "name": "Kavin Palanichamy",
-    "label": "Mechatronics Engineer",
+    "label": "Robotics Engineer",
     "image": "",
     "email": "palanichamy.kavin@gmail.com",
     "phone": "+48 739411634",
@@ -52,10 +52,22 @@
       "url": "https://www.pw.edu.pl/en",
       "area": "Mechatronics Engineering",
       "studyType": "Undergraduate Degree",
-      "startDate": "2020-10-10",
+      "startDate": "2021-01-10",
       "endDate": "2025-02-10",
-      "score": "4.3/5.0",
-      "courses": ["Control Systems", "Electronics", "Programming", "Mechanical Design"]
+      "score": "4.42/5.0",
+      "areas of study": ["Control Systems", "Electronics", "Embedded Programming", "Mechanical Design & Prototyping"]
+    },
+
+    {
+      "institution": "Technical University of Munich",
+      "location": "Munich, Germany",
+      "url": "https://www.tum.de/en/",
+      "area": "Mechatronics, Robotics and Bio-Mechanical Engineering",
+      "studyType": "Master's Degree",
+      "startDate": "2025-04-01",
+      "endDate": "Ongoing",
+      "score": "N/A",
+      "areas of study": ["Deep Learning", "Bio-Robotics", "Advanced Control Systems", "Computer Vision"]
     }
   ],
   "scholarships": [
@@ -85,6 +97,28 @@
   ],
   "skills": [
   {
+    "name": "Robotics",
+    "level": "Junior",
+    "icon": "fa-solid fa-robot",
+    "keywords": [
+      "Computer Vision",
+      "Deep Learning",
+      "Control of Complex Systems",
+      "Reinforcement Learning",
+      "MATLAB/Simulink"
+    ]
+  },
+  {
+    "name": "Mechanical Design & Prototyping",
+    "level": "Junior",
+    "icon": "fa-solid fa-gear",
+    "keywords": [
+      "Product Design and Development",
+      "FDM 3D Printing",
+      "Prortotyping"
+    ]
+  },
+  {
     "name": "Software Development",
     "level": "Junior",
     "icon": "fa-solid fa-code",
@@ -95,27 +129,6 @@
       "Git",
       "Networks",
       "Linux"
-    ]
-  },
-  {
-    "name": "Automation & Robotics",
-    "level": "Junior",
-    "icon": "fa-solid fa-robot",
-    "keywords": [
-      "Microcontrollers",
-      "PLC Programming",
-      "Control Systems",
-      "Inverse Kinematics",
-      "MATLAB/Simulink"
-    ]
-  },
-  {
-    "name": "Mechanical Design & Prototyping",
-    "level": "Junior",
-    "icon": "fa-solid fa-robot",
-    "keywords": [
-      "Autodesk Inventor",
-      "FDM 3D Printing"
     ]
   }
   ],
@@ -157,16 +170,6 @@
       "name": "Professor John Doe",
       "icon": "fa-solid fa-thumbtack",
       "reference": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam condimentum, diam quis convallis euismod, arcu mi ullamcorper lorem, a vestibulum nunc magna at sem. Sed in risus ac felis varius blandit. D"
-    }
-  ],
-  "projects": [
-    {
-      "name": "UWB Indoor Positioning for mobile robots",
-      "summary": "Implementing an UWB-based indoor positioning system for mobile robots using Qorvo's UWB modules and Raspberry Pi",
-      "highlights": ["Mobile Robotics", "UWB", "Raspberry Pi"],
-      "startDate": "2023-10-01",
-      "endDate": "2018-12-30",
-      "url": "https://www.kavinp.xyz/projects/1_project/"
     }
   ]
 }
