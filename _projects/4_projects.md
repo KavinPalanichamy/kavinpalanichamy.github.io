@@ -2,7 +2,7 @@
 layout: page
 title: ESA Hackathon
 description: A proposal to determine signal propagation in varied terrains using satellite data. The idea was developed as part of a hackathon event organized by European space Agency.The proposal won the preliminary round and was runner-up in the finals.
-img: assets/img/4_2.jpg
+img: assets/img/4_2.JPG
 importance: 4
 category: project gallery
 related_publications: false
@@ -22,10 +22,10 @@ Our pitch secured victory in the initial stage of the hackathon and earned recog
 
 <div class="row justify-content-sm-center">
     <div class="col-sm-4 mt-3 mt-md-0">
-        {% include figure.liquid path="assets/img/4_1.jpg" title="Team Presentation" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid path="assets/img/4_1.JPG" title="Team Presentation" class="img-fluid rounded z-depth-1" %}
     </div>
     <div class="col-sm-4 mt-3 mt-md-0">
-        {% include figure.liquid path="assets/img/4_3.jpg" title="Project Demo" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid path="assets/img/4_3.JPG" title="Project Demo" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 <div class="caption">

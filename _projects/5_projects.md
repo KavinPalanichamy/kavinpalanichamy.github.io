@@ -2,7 +2,7 @@
 layout: page
 title: Fabric Gripper
 description: A project focused on prototyping a pneumatic gripper capable of grasping and lifting delicate, soft cloths.
-img: assets/img/5_1.jpg
+img: assets/img/5_1.png
 importance: 2
 category: project gallery
 related_publications: false
@@ -19,7 +19,7 @@ Key highlights of the project include:
 
 <div class="row justify-content-sm-center">
     <div class="col-sm-4 mt-3 mt-md-0">
-        {% include figure.liquid path="assets/img/5_2.jpg" title="3D Printed Prototype" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid path="assets/img/5_2.png" title="3D Printed Prototype" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 <div class="caption">
