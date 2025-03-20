@@ -33,7 +33,7 @@ Key features include:
 
 <div class="row justify-content-sm-center">
     <div class="col-sm-8 mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/1_3.jpg" title="Testing Setup" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid loading="eager" path="assets/img/1_3.png" title="Testing Setup" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 <div class="caption">
@@ -54,7 +54,7 @@ Testing demonstrated superior positioning accuracy in indoor environments using 
 
 <div class="row justify-content-sm-center">
     <div class="col-sm-8 mt-3 mt-md-0">
-        {% include figure.liquid path="assets/img/1_4.jpg" title="Console Interface" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid path="assets/img/1_4.png" title="Console Interface" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 <div class="caption">
