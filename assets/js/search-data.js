@@ -430,6 +430,11 @@ ninja.data = [{
           description: "Development, implementation and Simulink simulation of a ball-on-plate balancing system using a 3RRS parallel manipulator and PID control.",
           section: "Projects",handler: () => {
               window.location.href = "/projects/7_projects/";
+            },},{id: "projects-segmentation-and-semantic-classification-with-pretrained-models",
+          title: 'Segmentation and Semantic Classification with Pretrained Models',
+          description: "An advanced computer vision system combining Meta&#39;s SAM (Segment Anything Model) and OpenAI&#39;s CLIP for intelligent object detection, segmentation, and natural language-based identification in images.",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/8_projects/";
             },},{
         id: 'social-email',
         title: 'email',
