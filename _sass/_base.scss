@@ -398,10 +398,10 @@ ul.task-list input[type="checkbox"] {
 // Social (bottom)
 
 .social {
-  text-align: center;
+  text-align: left;
 
   .contact-icons {
-    font-size: 4rem;
+    font-size: 2.5rem;
 
     a {
       img {
@@ -478,8 +478,8 @@ footer.fixed-bottom {
 
   .container {
     color: var(--global-footer-text-color);
-    padding-top: 9px;
-    padding-bottom: 8px;
+    padding-top: 2px;
+    padding-bottom: 2px;
     text-align: center;
   }
 
@@ -495,8 +495,8 @@ footer.fixed-bottom {
 
 footer.sticky-bottom {
   border-top: 1px solid var(--global-divider-color);
-  padding-top: 40px;
-  padding-bottom: 40px;
+  padding-top: 4px;
+  padding-bottom: 4px;
   font-size: 0.9rem;
 
   .container {
@@ -656,39 +656,172 @@ footer.sticky-bottom {
 // Projects
 
 .projects {
+  margin-top: 2rem;
+  
   a {
     text-decoration: none;
+    color: var(--global-text-color);
+    transition: all 0.3s ease;
 
     &:hover {
       .card-title {
         color: var(--global-theme-color);
       }
+      
+      .card {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
     }
   }
 
   .card {
+    background-color: var(--global-card-bg-color);
+    border-radius: 8px;
+    overflow: hidden;
+    height: 100%;
+    transition: all 0.3s ease;
+    border: 1px solid var(--global-divider-color);
+    
     img {
       width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: all 0.3s ease;
+    }
+    
+    .card-body {
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    
+    .card-title {
+      font-weight: 400;
+      margin-bottom: 0.75rem;
+      transition: color 0.3s ease;
+    }
+    
+    .card-text {
+      color: var(--global-text-color-light);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
     }
   }
 
+  .row {
+    margin-left: -15px;
+    margin-right: -15px;
+  }
+
   .col {
-    padding-bottom: 1rem;
+    padding: 15px;
+    display: flex;
   }
 
-  .grid-sizer,
-  .grid-item {
-    width: 250px;
-    margin-bottom: 10px;
+  // Masonry layout for projects
+  .projects-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-gap: 2rem;
+    
+    @media (max-width: 576px) {
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      grid-gap: 1.5rem;
+    }
   }
 
+  // Alternative grid layout for projects with auto-fill
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-auto-rows: auto;
+    grid-gap: 2rem;
+    
+    @media (max-width: 768px) {
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+    
+    @media (max-width: 576px) {
+      grid-template-columns: 1fr;
+      grid-gap: 1.5rem;
+    }
+  }
+
+  // Project category headers
   h2.category {
-    color: var(--global-divider-color);
-    border-bottom: 1px solid var(--global-divider-color);
-    padding-top: 0.5rem;
+    color: var(--global-theme-color);
+    border-bottom: 2px solid var(--global-theme-color);
+    padding-top: 1rem;
     margin-top: 2rem;
-    margin-bottom: 1rem;
-    text-align: right;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    text-align: left;
+    font-size: 1.75rem;
+  }
+  
+  // Project tags
+  .project-tags {
+    margin-top: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    
+    .tag {
+      background-color: var(--global-code-bg-color);
+      color: var(--global-theme-color);
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      
+      &:hover {
+        background-color: var(--global-theme-color);
+        color: var(--global-bg-color);
+      }
+    }
+  }
+
+  // Project featured indicator
+  .featured-project {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background-color: var(--global-theme-color);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    z-index: 1;
+  }
+}
+
+// Responsive image hover effect
+@media (min-width: 768px) {
+  .projects .card {
+    &:hover img {
+      transform: scale(1.05);
+    }
+  }
+}
+
+// Enhance responsive behavior
+@media (max-width: 992px) {
+  .projects .card {
+    .card-body {
+      padding: 1.25rem;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .projects .card {
+    .card-body {
+      padding: 1rem;
+    }
   }
 }
 
