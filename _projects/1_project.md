@@ -26,6 +26,7 @@ A novel approach to solving the challenge of Indoor positioning for mobile robot
 The project addresses the limitations of traditional GNSS in indoor environments by integrating UWB technology for centimeter-level precision. The system automatically transitions between GNSS and UWB based on signal quality and availability, ensuring continuous positioning accuracy.
 
 Key features include:
+
 - Seamless transition between indoor and outdoor navigation
 - Centimeter-level positioning accuracy indoors
 - Integration with existing GNSS systems
@@ -47,6 +48,7 @@ The system utilizes Qorvo's UWB modules configured as anchors and tags. The anch
 ## Results and Performance
 
 Testing demonstrated superior positioning accuracy in indoor environments using UWB compared to GNSS:
+
 - Stable positioning in indoor corridors (shown in green)
 - Successful automatic transition to GNSS outdoors
 - Reliable performance in GNSS-challenged environments
@@ -64,6 +66,7 @@ Testing demonstrated superior positioning accuracy in indoor environments using 
 ## Network Configuration Guidelines
 
 For optimal UWB network performance:
+
 1. Symmetric module arrangement
 2. 10m spacing between rows
 3. Variable height placement for Z-axis coverage

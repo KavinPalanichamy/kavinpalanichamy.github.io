@@ -31,7 +31,7 @@
       "startDate": "2024-02-10",
       "endDate": "2024-07-31",
       "summary": "I designed and prototyped a pneumatic gripper for soft fabric handling using 3D printing and Autodesk Inventor, while also assisting in the setup of an automation system for textile handling. Additionally, I developed multi-threaded Python scripts to automate a proprietary robotic textile handling system and created a custom Python library for SMC rotary and Pololu drives, successfully integrating it into the operational cycle.",
-      "highlights": ["Python", "Electronics and Instrumentation","3D Printing", "Autodesk Inventor","Automation"]
+      "highlights": ["Python", "Electronics and Instrumentation", "3D Printing", "Autodesk Inventor", "Automation"]
     },
     {
       "name": "PIAP Lukasiewicz",
@@ -44,7 +44,7 @@
       "highlights": ["C++", "Raspberry Pi", "Mobile Robotics"]
     }
   ],
-  
+
   "education": [
     {
       "institution": "Warsaw University of Technology",
@@ -96,43 +96,31 @@
     }
   ],
   "skillls": [
-  {
-    "name": "Robotics",
-    "level": "Junior",
-    "icon": "fa-solid fa-robot",
-    "keywords": [
-      "Computer Vision",
-      "Deep Learning",
-      "Control of Complex Systems",
-      "Kinematics and Motion Planning",
-      "Reinforcement Learning",
-      "MATLAB/Simulink"
-    ]
-  },
-  {
-    "name": "Mechanical Design & Prototyping",
-    "level": "Junior",
-    "icon": "fa-solid fa-gear",
-    "keywords": [
-      "CAD Modelling",
-      "Product Design and Development",
-      "FDM 3D Printing",
-      "Prortotyping"
-    ]
-  },
-  {
-    "name": "Software Development",
-    "level": "Junior",
-    "icon": "fa-solid fa-code",
-    "keywords": [
-      "Python",
-      "C++",
-      "C",
-      "Git",
-      "Networks",
-      "Linux"
-    ]
-  }
+    {
+      "name": "Robotics",
+      "level": "Junior",
+      "icon": "fa-solid fa-robot",
+      "keywords": [
+        "Computer Vision",
+        "Deep Learning",
+        "Control of Complex Systems",
+        "Kinematics and Motion Planning",
+        "Reinforcement Learning",
+        "MATLAB/Simulink"
+      ]
+    },
+    {
+      "name": "Mechanical Design & Prototyping",
+      "level": "Junior",
+      "icon": "fa-solid fa-gear",
+      "keywords": ["CAD Modelling", "Product Design and Development", "FDM 3D Printing", "Prortotyping"]
+    },
+    {
+      "name": "Software Development",
+      "level": "Junior",
+      "icon": "fa-solid fa-code",
+      "keywords": ["Python", "C++", "C", "Git", "Networks", "Linux"]
+    }
   ],
   "languages": [
     {
@@ -155,11 +143,7 @@
     {
       "name": "Manufacturing Technology",
       "icon": "fa-solid fa-industry",
-      "keywords": [
-        "Manufacturing techniques",
-        "Automated production lines",
-        "Robotics"
-      ]
+      "keywords": ["Manufacturing techniques", "Automated production lines", "Robotics"]
     }
   ],
   "references": [

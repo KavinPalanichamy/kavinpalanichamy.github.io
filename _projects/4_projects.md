@@ -8,7 +8,6 @@ category: project gallery
 related_publications: false
 ---
 
-
 ## Hackathon Pitch - WaveSense
 
 In February 2023, our team participated in Hackvision, a hackathon hosted in collaboration with the European Space Agency (ESA). The event aimed to encourage the utilization of open-source satellite data for innovative solutions.

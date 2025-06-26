@@ -657,7 +657,7 @@ footer.sticky-bottom {
 
 .projects {
   margin-top: 2rem;
-  
+
   a {
     text-decoration: none;
     color: var(--global-text-color);
@@ -667,7 +667,7 @@ footer.sticky-bottom {
       .card-title {
         color: var(--global-theme-color);
       }
-      
+
       .card {
         transform: translateY(-5px);
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
@@ -682,27 +682,27 @@ footer.sticky-bottom {
     height: 100%;
     transition: all 0.3s ease;
     border: 1px solid var(--global-divider-color);
-    
+
     img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       transition: all 0.3s ease;
     }
-    
+
     .card-body {
       padding: 1.5rem;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
     }
-    
+
     .card-title {
       font-weight: 400;
       margin-bottom: 0.75rem;
       transition: color 0.3s ease;
     }
-    
+
     .card-text {
       color: var(--global-text-color-light);
       font-size: 0.9rem;
@@ -725,7 +725,7 @@ footer.sticky-bottom {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     grid-gap: 2rem;
-    
+
     @media (max-width: 576px) {
       grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
       grid-gap: 1.5rem;
@@ -738,11 +738,11 @@ footer.sticky-bottom {
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     grid-auto-rows: auto;
     grid-gap: 2rem;
-    
+
     @media (max-width: 768px) {
       grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     }
-    
+
     @media (max-width: 576px) {
       grid-template-columns: 1fr;
       grid-gap: 1.5rem;
@@ -760,14 +760,14 @@ footer.sticky-bottom {
     text-align: left;
     font-size: 1.75rem;
   }
-  
+
   // Project tags
   .project-tags {
     margin-top: auto;
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
-    
+
     .tag {
       background-color: var(--global-code-bg-color);
       color: var(--global-theme-color);
@@ -776,7 +776,7 @@ footer.sticky-bottom {
       font-size: 0.8rem;
       font-weight: 500;
       transition: all 0.2s ease;
-      
+
       &:hover {
         background-color: var(--global-theme-color);
         color: var(--global-bg-color);

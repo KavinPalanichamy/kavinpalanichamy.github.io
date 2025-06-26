@@ -10,7 +10,7 @@ related_publications: false
 
 ## Project Overview - T3S
 
-*T3S*  is an advanced automation concept for the textile industry, focusing on efficient handling and quality assurance. By combining automated fabric manipulation with AI-driven defect detection, T3S aims to streamline the inspection and sorting process, ensuring high-quality standards with reduced manual intervention.
+_T3S_ is an advanced automation concept for the textile industry, focusing on efficient handling and quality assurance. By combining automated fabric manipulation with AI-driven defect detection, T3S aims to streamline the inspection and sorting process, ensuring high-quality standards with reduced manual intervention.
 
 Key features of the T3S system:
 

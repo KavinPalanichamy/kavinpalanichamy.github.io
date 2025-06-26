@@ -16,7 +16,6 @@ Key highlights of the project include:
 - Precision prototyping with Autodesk Inventor and 3D printing for functional testing
 - Optimization of grip strength and pressure control
 
-
 <div class="row justify-content-sm-center">
     <div class="col-sm-4 mt-3 mt-md-0">
         {% include figure.liquid path="assets/img/5_2.png" title="3D Printed Prototype" class="img-fluid rounded z-depth-1" %}
@@ -25,4 +24,3 @@ Key highlights of the project include:
 <div class="caption">
     3D Printed Prototype for Soft Material gripping. Copyright : Desion GmbH
 </div>
-
