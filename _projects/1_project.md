@@ -13,12 +13,12 @@ related_publications: false
 A novel approach to solving the challenge of Indoor positioning for mobile robots with UWB technology. The system automatically transitions between GNSS and UWB based on signal quality and availability, ensuring continuous positioning accuracy.
 
 <div class="row justify-content-center">
-    <div class="col-sm-10 mt-3 mt-md-0">
-        {% include video.liquid path="assets/video/1_1.mp4" class="img-fluid rounded z-depth-1" controls=true autoplay=true %}
+    <div class="col-sm-8 mt-3 mt-md-0">
+        {% include video.liquid path="assets/video/1_1.mp4" class="img-fluid rounded z-depth-1" controls=true autoplay=false muted=false %}
     </div>
 </div>
 <div class="caption text-center">
-    Demo: Indoor positioning system in action
+     Video 1. Real-time demonstration of a mobile Robot using UWB beacons for localization. The initial noise that is visible is the GNSS Signal.
 </div>
 
 <div class="row justify-content-center">
