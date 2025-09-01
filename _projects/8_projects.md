@@ -19,7 +19,6 @@ This project presents an intelligent animal detection and classification system 
      Video 1. Real-time animal detection and classification demonstration.
 </div>
 
-
 ### Processing Workflow
 
 ```python
