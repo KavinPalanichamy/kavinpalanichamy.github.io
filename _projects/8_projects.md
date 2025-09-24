@@ -3,7 +3,7 @@ layout: page
 title: Segmentation and Semantic Classification with Pretrained Models
 description: An advanced computer vision system combining Meta's SAM (Segment Anything Model) and OpenAI's CLIP for intelligent object detection, segmentation, and natural language-based identification in images.
 img: assets/img/8_1.jpg
-importance: 1
+importance: 2
 category: project gallery
 related_publications: false
 ---
