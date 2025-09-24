@@ -399,7 +399,7 @@ ninja.data = [{
           title: 'Indoor Positioning for Mobile Robots',
           description: "Thanks to UWB technology, robots can now navigate indoors with centimeter-level precision. The project was carried out at PIAP Lukasiewicz, a leading Polish government defence research institute.",
           section: "Projects",handler: () => {
-              window.location.href = "/projects/1_project/";
+              window.location.href = "/projects/1_projects/";
             },},{id: "projects-plc-software-with-hmi-for-cnc-engraver",
           title: 'PLC software with HMI for CNC Engraver',
           description: "The team project was done as a part of my internship at B&amp;R Automation. Automation studio was used to program a PLC from B&amp;R. The PLC was used to control a 4 axis CNC machine.",
@@ -435,6 +435,11 @@ ninja.data = [{
           description: "An advanced computer vision system combining Meta&#39;s SAM (Segment Anything Model) and OpenAI&#39;s CLIP for intelligent object detection, segmentation, and natural language-based identification in images.",
           section: "Projects",handler: () => {
               window.location.href = "/projects/8_projects/";
+            },},{id: "projects-safepath-smart-navigation-glasses",
+          title: 'SafePath - Smart Navigation Glasses',
+          description: "An innovative assistive technology solution combining computer vision, haptic feedback, and AI-powered voice descriptions to provide accessible and affordable navigation assistance for the visually impaired.",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/9_projects/";
             },},{
         id: 'social-email',
         title: 'email',
